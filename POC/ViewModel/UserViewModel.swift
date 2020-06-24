@@ -11,15 +11,20 @@ import UIKit
 import Alamofire
 
 class UserViewModel {
+    //MARK:- Properties
     weak var vc: ViewController?
-    var arrUsers = [Response]()
+    var arrUsers = [arrList]()
+  
     
+    //MARK:- API Call Using Alamofire
     func getAllUsreDataAF(){
-        AF.request("https://www.reddit.com/r/all/top/.json?t=all&limit=10").response { response in
+        
+    AF.request("https://api.letsbuildthatapp.com/jsondecodable/courses").response { response in
             if let data = response.data {
                 do{
-                    let userResponse = try JSONDecoder().decode([Response].self, from: data)
+                    let userResponse = try JSONDecoder().decode([arrList].self, from: data)
                     self.arrUsers.append(contentsOf: userResponse)
+                    //MARK:- Async Operation to load data in Main thread
                     DispatchQueue.main.async{
                         self.vc?.tblView.reloadData()
                     }

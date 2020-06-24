@@ -12,17 +12,30 @@ class UserCell: UITableViewCell{
     @IBOutlet weak var lblTitle: UILabel!
     @IBOutlet weak var lblNum_Comments: UILabel!
     @IBOutlet weak var imgThumbnail : UIImageView!
-    var modelUser: Response?{
+    
+    var modelUser: arrList?{
         didSet{
             userConfiguration()
         }
     }
     
-    func userConfiguration(){
-         
-          
-        lblTitle.text = modelUser?.title
-        lblAuthor.text = modelUser?.author
+    func userConfiguration() {
+       
+        
+        lblTitle.text = modelUser?.link
+        lblAuthor.text = modelUser?.name
+        
+        if let imageURL = URL(string: modelUser!.imageUrl){
+                       DispatchQueue.global().async {
+                           let data = try? Data(contentsOf: imageURL)
+                           if let data = data {
+                               let image = UIImage(data: data)
+                               DispatchQueue.main.async {
+                                   self.imgThumbnail.image = image
+                               }
+                           }
+                       }
+                   } 
         
        }
 }
